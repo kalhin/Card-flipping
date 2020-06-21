@@ -5,15 +5,16 @@
 //                                    \ Textures
 //                                     \ Colors
 
+console.log("card");
 import * as THREE from 'three';
+import { renderer, camera, scene } from './init';
 import dat from 'dat.gui';
+
 var initializeDomEvents = require('threex-domevents');
 var THREEx = {};
 initializeDomEvents(THREE, THREEx);
 
-let width, height, canvas;
-let renderer, camera, scene, light, mesh;
-let cardGeometry, cardMaterial;
+let cardMesh, cardGeometry, cardMaterial;
 
 const card = {
   positionX: 0,
@@ -24,30 +25,11 @@ const card = {
   rotationZ: 0,
 };
 
-init();
+cardModel();
 gui();
-
 animation();
 
-function init() {
-  canvas = document.getElementById("canvas");
-
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.setAttribute("width", width);
-  canvas.setAttribute("height", height);
-
-  renderer = new THREE.WebGLRenderer({ canvas: canvas });
-  renderer.setClearColor(0x000000); //black background
-
-  camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 5000); //angle, proportions, display range from, display range to
-  camera.position.set(0, 0, 1000); //x, y, z coordinates
-
-  scene = new THREE.Scene();
-
-  light = new THREE.AmbientLight(0xffffff);
-  scene.add(light);
-
+function cardModel() {
   cardGeometry = new THREE.BoxGeometry(180, 300, 10, 5, 5, 5); //figure width / height, sectors
 
   const sideMaterials = [
@@ -79,22 +61,21 @@ function init() {
 
   cardMaterial = new THREE.MeshFaceMaterial(sideMaterials);
 
-  mesh = new THREE.Mesh(cardGeometry, cardMaterial);
+  cardMesh = new THREE.Mesh(cardGeometry, cardMaterial);
 
   // click event
   const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
-
   domEvents.addEventListener(
-    mesh,
+    cardMesh,
     "click",
     function (event) {
-      console.log("you clicked on the mesh");
+      console.log("you clicked on the cardMesh");
       flipingCard();
     },
     false
   );
-
-  scene.add(mesh);
+  
+  scene.add(cardMesh);
 }
 
 function gui() {
@@ -108,7 +89,7 @@ function gui() {
 }
 
 function flipingCard() {
-    mesh.rotation.y -= 0.06;
+    cardMesh.rotation.y -= 0.06;
 
   renderer.render(scene, camera);
   requestAnimationFrame(function () {
@@ -117,12 +98,12 @@ function flipingCard() {
 }
 
 function animation() {
-  mesh.position.x += card.positionX;
-  mesh.position.y += card.positionY;
-  mesh.position.z += card.positionZ;
-  mesh.rotation.x += card.rotationX;
-  mesh.rotation.y += card.rotationY;
-  mesh.rotation.z += card.rotationZ;
+  cardMesh.position.x += card.positionX;
+  cardMesh.position.y += card.positionY;
+  cardMesh.position.z += card.positionZ;
+  cardMesh.rotation.x += card.rotationX;
+  cardMesh.rotation.y += card.rotationY;
+  cardMesh.rotation.z += card.rotationZ;
 
   renderer.render(scene, camera);
   requestAnimationFrame(function () {
