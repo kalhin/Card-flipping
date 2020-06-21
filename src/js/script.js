@@ -4,10 +4,17 @@
 //                        \ Material - Display rules
 //                                    \ Textures
 //                                     \ Colors
+
+import * as THREE from 'three';
+import dat from 'dat.gui';
+var initializeDomEvents = require('threex-domevents');
+var THREEx = {};
+initializeDomEvents(THREE, THREEx);
+
 let width, height, canvas;
 let renderer, camera, scene, light, mesh;
 let cardGeometry, cardMaterial;
-let cardTexture, loader;
+
 const card = {
   positionX: 0,
   positionY: 0,
@@ -61,11 +68,11 @@ function init() {
       side: THREE.DoubleSide,
     }),
     new THREE.MeshBasicMaterial({
-      map: new THREE.TextureLoader().load("img/dragon.jpg"),
+      map: new THREE.TextureLoader().load("src/img/dragon.jpg"),
       side: THREE.DoubleSide,
     }),
     new THREE.MeshBasicMaterial({
-      map: new THREE.TextureLoader().load("img/dragon1.jpg"),
+      map: new THREE.TextureLoader().load("src/img/dragon.jpg"),
       side: THREE.DoubleSide,
     }),
   ];
@@ -74,8 +81,9 @@ function init() {
 
   mesh = new THREE.Mesh(cardGeometry, cardMaterial);
 
-  //click event
+  // click event
   const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+
   domEvents.addEventListener(
     mesh,
     "click",
