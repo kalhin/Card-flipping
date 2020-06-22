@@ -16,5 +16,5 @@ camera.position.set(0, 0, 1000); //x, y, z coordinates
 
 export const scene = new THREE.Scene();
 
-export const light = new THREE.AmbientLight(0xffffff);
+const light = new THREE.AmbientLight(0xffffff);
 scene.add(light);

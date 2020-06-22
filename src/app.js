@@ -9,4 +9,4 @@
 console.log("app")
 import './js/init';
 import './js/card';
-import './js/fire';
+// import './js/fire';

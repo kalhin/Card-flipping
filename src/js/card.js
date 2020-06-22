@@ -6,11 +6,12 @@
 //                                     \ Colors
 
 console.log("card");
-import * as THREE from 'three';
-import { renderer, camera, scene } from './init';
-import dat from 'dat.gui';
+import * as THREE from "three";
+import { renderer, camera, scene } from "./init";
+import dat from "dat.gui";
+import { flame } from "./fire";
 
-var initializeDomEvents = require('threex-domevents');
+var initializeDomEvents = require("threex-domevents");
 var THREEx = {};
 initializeDomEvents(THREE, THREEx);
 
@@ -34,28 +35,34 @@ function cardModel() {
 
   const sideMaterials = [
     new THREE.MeshBasicMaterial({
-      color: 0xff00ff,
-      side: THREE.DoubleSide,
+      color: 0xad1909,
+      side: THREE.FrontSide,
+      // opacity: 0.5
     }),
     new THREE.MeshBasicMaterial({
-      color: 0xff00ff,
-      side: THREE.DoubleSide,
+      color: 0xad1909,
+      side: THREE.FrontSide,
+      // opacity: 0.5
     }),
     new THREE.MeshBasicMaterial({
-      color: 0xff00ff,
-      side: THREE.DoubleSide,
+      color: 0xad1909,
+      side: THREE.FrontSide,
+      // opacity: 0.5
     }),
     new THREE.MeshBasicMaterial({
-      color: 0xff00ff,
-      side: THREE.DoubleSide,
+      color: 0xad1909,
+      side: THREE.FrontSide,
+      // opacity: 0.5
+    }),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load("src/img/frame.jpg"),
+      side: THREE.FrontSide,
+      // opacity: 0.5
     }),
     new THREE.MeshBasicMaterial({
       map: new THREE.TextureLoader().load("src/img/dragon.jpg"),
-      side: THREE.DoubleSide,
-    }),
-    new THREE.MeshBasicMaterial({
-      map: new THREE.TextureLoader().load("src/img/dragon.jpg"),
-      side: THREE.DoubleSide,
+      side: THREE.FrontSide,
+      // opacity: 0.5
     }),
   ];
 
@@ -70,11 +77,18 @@ function cardModel() {
     "click",
     function (event) {
       console.log("you clicked on the cardMesh");
-      flipingCard();
+      cardFliping(10);
+      setTimeout(function () {
+        moveBack(10);
+      }, 2000);
+      setTimeout(function () {
+        flame(1);
+      }, 2500);
+
     },
     false
   );
-  
+
   scene.add(cardMesh);
 }
 
@@ -88,13 +102,27 @@ function gui() {
   gui.add(card, "rotationZ").min(-0.2).max(0.2).step(0.001);
 }
 
-function flipingCard() {
-    cardMesh.rotation.y -= 0.06;
+function moveBack(speed) {
+  console.log("move back");
+  if (cardMesh.position.z > 0) {
+    cardMesh.position.z -= speed*2;
+    renderer.render(scene, camera);
+    requestAnimationFrame(function () {
+      moveBack(speed);
+    });
+  }
+}
 
-  renderer.render(scene, camera);
-  requestAnimationFrame(function () {
-    flipingCard();
-  });
+function cardFliping(speed) {
+  if (cardMesh.position.z < 400) {
+    cardMesh.position.z += speed;
+    cardMesh.rotation.y -= THREE.Math.degToRad(4.5);
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(function () {
+      cardFliping(speed);
+    });
+  }
 }
 
 function animation() {
