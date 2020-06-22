@@ -8,7 +8,7 @@
 console.log("card");
 import * as THREE from "three";
 import { renderer, camera, scene } from "./init";
-import dat from "dat.gui";
+import { gui } from './controls';
 import { flame } from "./fire";
 
 var initializeDomEvents = require("threex-domevents");
@@ -17,7 +17,7 @@ initializeDomEvents(THREE, THREEx);
 
 let cardMesh, cardGeometry, cardMaterial;
 
-const card = {
+export const card = {
   positionX: 0,
   positionY: 0,
   positionZ: 0,
@@ -80,26 +80,16 @@ function cardModel() {
       cardFliping(10);
       setTimeout(function () {
         moveBack(10);
-      }, 2000);
+      }, 1200);
       setTimeout(function () {
         flame(1);
-      }, 2500);
+      }, 1600);
 
     },
     false
   );
 
   scene.add(cardMesh);
-}
-
-function gui() {
-  const gui = new dat.GUI();
-  gui.add(card, "positionX").min(-10).max(10).step(0.1);
-  gui.add(card, "positionY").min(-10).max(10).step(0.1);
-  gui.add(card, "positionZ").min(-20).max(20).step(0.1);
-  gui.add(card, "rotationX").min(-0.2).max(0.2).step(0.001);
-  gui.add(card, "rotationY").min(-0.2).max(0.2).step(0.001);
-  gui.add(card, "rotationZ").min(-0.2).max(0.2).step(0.001);
 }
 
 function moveBack(speed) {

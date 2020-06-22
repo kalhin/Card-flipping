@@ -1,4 +1,4 @@
-// Structure
+         // Structure
 //Renderer - Camera
 //         \ Scene - Lights
 //                 \Mesh - Geometry
@@ -9,4 +9,3 @@
 console.log("app")
 import './js/init';
 import './js/card';
-// import './js/fire';
